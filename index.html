@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Envision × Boeing — WIMKA Small Parts Program</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --blue:#003087;--navy:#001852;--navy-deep:#000d2e;
+    --green:#78BE21;--green-bright:#8fd92e;
+    --white:#ffffff;--off-white:#f4f7fc;
+    --highlight:rgba(255,235,59,.32);--warn:#f5a623;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Montserrat',sans-serif;font-weight:500;background:var(--navy-deep);color:var(--white);-webkit-font-smoothing:antialiased;line-height:1.55}
+  em{font-style:italic;font-weight:700;color:var(--green)}
+  a{color:inherit;text-decoration:none}
+
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:rgba(0,13,46,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(120,190,33,.18)}
+  .brand{display:flex;align-items:center;gap:.7rem;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-weight:800;color:var(--white)}
+  .brand-mark{width:26px;height:26px;border:1.5px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:italic;color:var(--green);font-size:.8rem;font-weight:800}
+  .topbar-cta{background:var(--green);color:var(--navy);padding:.6rem 1.3rem;border-radius:2px;font-weight:800;letter-spacing:.12em;font-size:.7rem;text-transform:uppercase}
+  .topbar-cta:hover{background:var(--green-bright)}
+  .topbar-download{background:transparent;color:var(--white);border:1px solid rgba(120,190,33,.4);padding:.55rem 1.1rem;border-radius:2px;font-weight:800;letter-spacing:.12em;font-size:.7rem;text-transform:uppercase;transition:all .15s}
+  .topbar-download:hover{border-color:var(--green);color:var(--green)}
+
+  .layout{display:grid;grid-template-columns:280px 1fr;min-height:100vh;padding-top:60px}
+
+  aside{position:sticky;top:60px;align-self:start;height:calc(100vh - 60px);overflow-y:auto;padding:2.5rem 1.75rem;background:var(--navy);border-right:1px solid rgba(120,190,33,.18)}
+  .toc-title{font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;font-weight:800;color:var(--green);margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem}
+  .toc-title::before{content:'';width:24px;height:1.5px;background:var(--green)}
+  .toc{list-style:none;display:flex;flex-direction:column;gap:.15rem}
+  .toc a{display:flex;align-items:flex-start;gap:.75rem;padding:.7rem .85rem;border-radius:3px;font-size:.82rem;font-weight:700;color:var(--white);transition:all .15s;border-left:2px solid transparent;line-height:1.3}
+  .toc-num{font-style:italic;font-weight:800;color:var(--green);font-size:.85rem;flex-shrink:0;width:18px;letter-spacing:-.02em}
+  .toc a:hover{background:rgba(120,190,33,.1);color:var(--green)}
+  .toc a.active{background:rgba(120,190,33,.18);color:var(--green);border-left-color:var(--green)}
+  .toc a.active .toc-num{color:var(--white)}
+
+  .toc-divider{height:1px;background:rgba(120,190,33,.18);margin:1.25rem 0}
+  .toc-meta{padding:0 .85rem}
+  .toc-meta div{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--white);line-height:1.5;margin-bottom:.6rem}
+  .toc-meta strong{color:var(--green);display:block;font-size:.6rem;letter-spacing:.22em;margin-bottom:.2rem}
+
+  main{padding:0;min-width:0}
+  section{padding:5rem 4rem;max-width:1100px;border-bottom:1px solid rgba(120,190,33,.12)}
+  .section-light{background:var(--off-white);color:var(--navy);max-width:none;border-bottom-color:rgba(0,48,135,.12)}
+  .section-light .inner{max-width:1100px;padding:5rem 4rem;margin:0}
+
+  .hero{position:relative;min-height:calc(100vh - 60px);padding:5rem 4rem;display:flex;align-items:center;overflow:hidden;max-width:none;border-bottom:1px solid var(--green)}
+  .hero-bg{position:absolute;inset:0;background:url('images/envision-dallas-dusk.jpg') center/cover;transform:scale(1.04);animation:slowZoom 24s ease-out forwards}
+  @keyframes slowZoom{from{transform:scale(1.04)}to{transform:scale(1)}}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,13,46,.93) 0%,rgba(0,24,82,.78) 50%,rgba(0,13,46,.96) 100%)}
+  .hero-content{position:relative;z-index:2;max-width:900px}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:.7rem;font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;font-weight:800;color:var(--green);margin-bottom:1.25rem}
+  .eyebrow::before{content:'';width:28px;height:1.5px;background:var(--green)}
+  .section-light .eyebrow{color:var(--blue)}
+  .section-light .eyebrow::before{background:var(--blue)}
+
+  h1{font-size:clamp(2.4rem,5vw,4.4rem);font-weight:900;line-height:1.04;letter-spacing:-.025em;color:var(--white);margin-bottom:1.5rem}
+  h2{font-size:clamp(1.85rem,3.4vw,2.8rem);font-weight:900;line-height:1.07;letter-spacing:-.022em;color:var(--white);margin-bottom:1rem}
+  .section-light h2{color:var(--navy)}
+  h3{font-size:1.1rem;font-weight:800;line-height:1.25;letter-spacing:-.01em;color:var(--white);margin-bottom:.55rem}
+  .section-light h3{color:var(--navy)}
+  h4{font-size:.92rem;font-weight:800;color:var(--white);line-height:1.3;margin-bottom:.4rem}
+  .section-light h4{color:var(--navy)}
+  .lede{font-size:1.05rem;line-height:1.6;color:var(--white);max-width:780px;font-weight:500;margin-bottom:0}
+  .section-light .lede{color:var(--navy)}
+
+  .btn-primary{display:inline-block;background:var(--green);color:var(--navy);padding:.95rem 1.85rem;font-weight:800;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;border-radius:2px;transition:all .2s}
+  .btn-primary:hover{background:var(--green-bright);box-shadow:0 0 24px rgba(120,190,33,.4)}
+  .btn-ghost{display:inline-block;background:transparent;color:var(--white);border:1.5px solid var(--white);padding:.95rem 1.85rem;font-weight:800;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;border-radius:2px;transition:all .2s}
+  .btn-ghost:hover{background:var(--white);color:var(--navy)}
+
+  .hero-cta{margin-top:2.25rem;display:flex;gap:.85rem;flex-wrap:wrap}
+  .hero-meta{display:grid;grid-template-columns:repeat(3,auto);gap:2.5rem;margin-top:3.5rem;padding-top:1.75rem;border-top:1px solid rgba(120,190,33,.35)}
+  .hero-meta div{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--white)}
+  .hero-meta strong{display:block;color:var(--green);margin-bottom:.4rem;font-weight:800;letter-spacing:.18em}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--green);border-bottom:1px solid var(--green);margin:2rem 0}
+  .stat{padding:1.6rem 1.25rem;border-right:1px solid rgba(120,190,33,.25)}
+  .stat:last-child{border-right:none}
+  .stat-num{font-size:clamp(1.7rem,2.8vw,2.6rem);font-weight:900;line-height:1;letter-spacing:-.02em;color:var(--white);margin-bottom:.55rem}
+  .stat-num em{font-size:.55em;color:var(--green)}
+  .stat-label{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--green);line-height:1.4}
+  .section-light .stat-num{color:var(--navy)}
+  .section-light .stats{border-color:var(--blue)}
+  .section-light .stat{border-right-color:rgba(0,48,135,.2)}
+  .section-light .stat-label{color:var(--blue)}
+
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:1.75rem}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.5rem}
+
+  .card{padding:1.6rem;border-radius:3px;background:rgba(0,48,135,.32);border:1px solid rgba(120,190,33,.2);transition:all .2s}
+  .card:hover{border-color:var(--green);transform:translateY(-2px)}
+  .card-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:var(--green);margin-bottom:.7rem;display:block}
+  .card-body{font-size:.88rem;line-height:1.6;color:var(--white);font-weight:500}
+  .card ul{list-style:none;margin-top:.55rem}
+  .card ul li{font-size:.85rem;line-height:1.5;margin-bottom:.4rem;position:relative;padding-left:1rem;color:var(--white);font-weight:500}
+  .card ul li::before{content:'›';position:absolute;left:0;color:var(--green);font-weight:800;font-size:1.05rem;line-height:1.4}
+  .section-light .card{background:var(--white);border-color:rgba(0,48,135,.18)}
+  .section-light .card:hover{border-color:var(--blue)}
+  .section-light .card-label{color:var(--blue)}
+  .section-light .card-body,.section-light .card ul li{color:var(--navy)}
+  .section-light .card ul li::before{color:var(--blue)}
+
+  .callout{margin-top:1.75rem;padding:1.4rem 1.75rem;border-radius:3px;background:linear-gradient(90deg,rgba(120,190,33,.18) 0%,rgba(120,190,33,.04) 100%);border-left:4px solid var(--green)}
+  .callout-label{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:var(--green);margin-bottom:.45rem;display:block}
+  .callout p{font-size:.95rem;line-height:1.55;color:var(--white);font-weight:600}
+  .section-light .callout p{color:var(--navy)}
+  .callout.warn{background:linear-gradient(90deg,rgba(245,166,35,.22) 0%,rgba(245,166,35,.04) 100%);border-left-color:var(--warn)}
+  .callout.warn .callout-label{color:var(--warn)}
+  .callout-link{color:var(--green);font-weight:800;border-bottom:1px solid var(--green);padding-bottom:1px}
+  .callout-link:hover{color:var(--white);border-bottom-color:var(--white)}
+  .section-light .callout-link{color:var(--blue);border-bottom-color:var(--blue)}
+
+  .ph{background:var(--highlight);padding:.05em .35em;border-radius:2px;color:var(--white);font-weight:700}
+  .section-light .ph{color:var(--navy)}
+
+  details{margin-top:.75rem;background:rgba(0,48,135,.32);border:1px solid rgba(120,190,33,.2);border-radius:3px;overflow:hidden;transition:all .2s}
+  details[open]{border-color:var(--green)}
+  summary{cursor:pointer;padding:1.1rem 1.4rem;display:flex;align-items:center;gap:1rem;list-style:none;font-weight:800;color:var(--white);font-size:.92rem;transition:background .15s}
+  summary::-webkit-details-marker{display:none}
+  summary:hover{background:rgba(120,190,33,.08)}
+  .summary-title{flex:1}
+  .summary-meta{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--green)}
+  .summary-icon{width:22px;height:22px;border:1.5px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:800;font-size:.85rem;flex-shrink:0;transition:transform .2s}
+  details[open] .summary-icon{transform:rotate(45deg)}
+  .details-body{padding:0 1.4rem 1.4rem;color:var(--white);font-size:.88rem;line-height:1.6;font-weight:500}
+  .section-light details{background:var(--white);border-color:rgba(0,48,135,.18)}
+  .section-light details[open]{border-color:var(--blue)}
+  .section-light summary{color:var(--navy)}
+  .section-light .summary-icon{border-color:var(--blue);color:var(--blue)}
+  .section-light .summary-meta{color:var(--blue)}
+  .section-light .details-body{color:var(--navy)}
+
+  .tabs{margin-top:2rem;border:1px solid rgba(120,190,33,.25);border-radius:3px;overflow:hidden;background:rgba(0,48,135,.32)}
+  .tab-bar{display:flex;background:var(--navy);border-bottom:1px solid rgba(120,190,33,.25);overflow-x:auto}
+  .tab-btn{padding:1rem 1.4rem;background:transparent;border:none;color:var(--white);font-family:inherit;font-weight:800;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0}
+  .tab-btn:hover{color:var(--green)}
+  .tab-btn.active{color:var(--green);border-bottom-color:var(--green);background:rgba(120,190,33,.08)}
+  .tab-content{padding:1.5rem;display:none}
+  .tab-content.active{display:block;animation:fadeIn .3s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  .section-light .tabs{background:var(--white);border-color:rgba(0,48,135,.18)}
+  .section-light .tab-bar{background:var(--blue);border-bottom-color:rgba(120,190,33,.4)}
+  .section-light .tab-btn{color:var(--white)}
+  .section-light .tab-btn.active{color:var(--green);background:var(--navy)}
+
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+  .kpi-card{padding:1rem 1.1rem;background:rgba(0,13,46,.5);border-left:3px solid var(--green);border-radius:0 3px 3px 0}
+  .kpi-name{font-size:.8rem;font-weight:700;color:var(--white);line-height:1.3;margin-bottom:.45rem;min-height:2.6em}
+  .kpi-target{font-style:italic;color:var(--green);font-size:1.2rem;font-weight:800;letter-spacing:-.02em}
+  .section-light .kpi-card{background:var(--off-white);border-left-color:var(--blue)}
+  .section-light .kpi-name{color:var(--navy)}
+  .section-light .kpi-target{color:var(--blue)}
+
+  .checklist{display:grid;grid-template-columns:repeat(2,1fr);gap:.55rem}
+  .check-item{display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1rem;background:rgba(0,13,46,.5);border-left:3px solid var(--green);border-radius:0 3px 3px 0}
+  .check-box{width:14px;height:14px;border:2px solid var(--green);flex-shrink:0;margin-top:.2rem;border-radius:2px}
+  .check-text strong{display:block;font-weight:800;color:var(--white);margin-bottom:.15rem;font-size:.82rem;line-height:1.3}
+  .check-text span{color:var(--white);font-size:.76rem;font-weight:500;line-height:1.45}
+  .section-light .check-item{background:var(--off-white);border-left-color:var(--blue)}
+  .section-light .check-box{border-color:var(--blue)}
+  .section-light .check-text strong,.section-light .check-text span{color:var(--navy)}
+
+  .actions-list{display:flex;flex-direction:column;gap:.55rem}
+  .action-row{display:grid;grid-template-columns:36px 1fr 220px;gap:1.25rem;align-items:center;padding:.95rem 1.15rem;background:rgba(0,13,46,.5);border-left:3px solid var(--green);border-radius:0 3px 3px 0}
+  .action-num{font-style:italic;color:var(--green);font-weight:800;font-size:1.3rem;line-height:1;letter-spacing:-.02em}
+  .action-text{font-size:.85rem;color:var(--white);font-weight:600;line-height:1.45}
+  .action-owner{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--green);text-align:right;line-height:1.4}
+  .section-light .action-row{background:var(--off-white);border-left-color:var(--blue)}
+  .section-light .action-num,.section-light .action-owner{color:var(--blue)}
+  .section-light .action-text{color:var(--navy)}
+
+  .flow-graphic{margin-top:2rem;background:rgba(0,13,46,.5);border:1px solid rgba(120,190,33,.25);border-radius:3px;padding:1.5rem;overflow-x:auto}
+  .flow-row{display:grid;grid-template-columns:160px 1fr;gap:.85rem;margin-bottom:.65rem;align-items:stretch;min-width:850px}
+  .flow-row:last-child{margin-bottom:0}
+  .flow-actor{padding:.95rem 1rem;background:var(--blue);border-left:3px solid var(--green);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;display:flex;align-items:center;color:var(--white);border-radius:0 3px 3px 0;line-height:1.3}
+  .flow-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;align-items:stretch}
+  .flow-step{padding:.75rem .9rem;background:rgba(0,48,135,.42);border:1px solid rgba(120,190,33,.25);font-size:.74rem;line-height:1.4;color:var(--white);font-weight:600;border-radius:2px;display:flex;align-items:center}
+  .flow-step.empty{background:transparent;border:1px dashed rgba(120,190,33,.25);justify-content:center;color:var(--green);font-weight:800;font-size:1rem}
+  .section-light .flow-graphic{background:var(--off-white);border-color:rgba(0,48,135,.18)}
+  .section-light .flow-step{background:var(--white);border-color:rgba(0,48,135,.18);color:var(--navy)}
+  .section-light .flow-step.empty{background:transparent;color:var(--blue);border-style:dashed}
+
+  .price-headline{margin-top:2rem;padding:2rem;background:linear-gradient(135deg,var(--blue) 0%,var(--navy) 100%);border:1px solid var(--green);border-radius:3px;display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:flex-end}
+  .price-tag{display:inline-block;padding:.3rem .65rem;background:rgba(245,166,35,.25);color:var(--warn);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:800;border-radius:2px;margin-bottom:.65rem;border:1px solid var(--warn)}
+  .price-big{font-size:clamp(2rem,3vw,2.8rem);font-weight:900;color:var(--white);letter-spacing:-.02em;line-height:1;margin:.3rem 0}
+  .price-big em{color:var(--green);font-size:.5em}
+  .price-fine{font-size:.78rem;color:var(--white);font-weight:600;line-height:1.55}
+  .fte-block{font-size:.76rem;color:var(--white);font-weight:600;line-height:1.7;text-align:right}
+  .fte-block strong{display:block;color:var(--green);margin-bottom:.3rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.65rem}
+
+  .price-add{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+  .add-card{padding:1.25rem 1.4rem;background:rgba(0,48,135,.42);border:1px solid rgba(120,190,33,.2);border-radius:3px}
+  .add-card .card-label{margin-bottom:.65rem}
+  .add-line{display:flex;justify-content:space-between;align-items:baseline;padding:.5rem 0;font-size:.82rem;color:var(--white);font-weight:600;border-bottom:1px dashed rgba(120,190,33,.18)}
+  .add-line:last-child{border-bottom:none}
+  .add-line .val{color:var(--green);font-weight:800}
+  .section-light .add-card{background:var(--white);border-color:rgba(0,48,135,.18)}
+  .section-light .add-line{color:var(--navy);border-bottom-color:rgba(0,48,135,.18)}
+  .section-light .add-line .val{color:var(--blue)}
+
+  .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
+  .contact-org{font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;font-weight:800;color:var(--green);margin:1.25rem 0 .85rem}
+  .contact{padding:1.25rem;background:rgba(0,48,135,.32);border:1px solid rgba(120,190,33,.2);border-radius:3px}
+  .contact-role{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:var(--green);margin-bottom:.7rem;display:block}
+  .contact-name{font-size:1.02rem;font-weight:800;color:var(--white);margin-bottom:.25rem}
+  .contact-title{font-size:.78rem;color:var(--white);font-weight:600;line-height:1.4;margin-bottom:.85rem}
+  .contact-meta{font-size:.78rem;color:var(--white);font-weight:600;line-height:1.65}
+  .contact-meta a{color:var(--green);font-weight:700;border-bottom:1px solid var(--green)}
+  .contact-meta a:hover{color:var(--white);border-bottom-color:var(--white)}
+  .section-light .contact{background:var(--white);border-color:rgba(0,48,135,.18)}
+  .section-light .contact-name,.section-light .contact-title,.section-light .contact-meta{color:var(--navy)}
+  .section-light .contact-role{color:var(--blue)}
+  .section-light .contact-meta a{color:var(--blue);border-bottom-color:var(--blue)}
+  .section-light .contact-meta a:hover{color:var(--navy);border-bottom-color:var(--navy)}
+  .section-light .contact-org{color:var(--blue)}
+
+  .downloads-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1.5rem}
+  .dl-card{display:flex;align-items:center;gap:1.1rem;padding:1.4rem 1.5rem;background:rgba(0,48,135,.32);border:1px solid rgba(120,190,33,.2);border-radius:3px;transition:all .2s;cursor:pointer;text-decoration:none;color:inherit}
+  .dl-card:hover{border-color:var(--green);transform:translateY(-2px)}
+  .dl-card.disabled{opacity:.5;cursor:not-allowed;pointer-events:none}
+  .dl-icon{flex-shrink:0;width:48px;height:48px;border:1.5px solid var(--green);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:800;font-size:.65rem;letter-spacing:.08em}
+  .dl-body{flex:1;min-width:0}
+  .dl-title{font-size:.98rem;font-weight:800;color:var(--white);margin-bottom:.2rem;line-height:1.3;letter-spacing:-.01em}
+  .dl-meta{font-size:.72rem;color:var(--white);font-weight:600;line-height:1.45}
+  .dl-meta .status{color:var(--green);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.62rem}
+  .dl-meta .status.pending{color:var(--warn)}
+  .dl-arrow{font-size:1.2rem;color:var(--green);font-weight:800;flex-shrink:0}
+  .section-light .dl-card{background:var(--white);border-color:rgba(0,48,135,.18)}
+  .section-light .dl-card:hover{border-color:var(--blue)}
+  .section-light .dl-icon{border-color:var(--blue);color:var(--blue)}
+  .section-light .dl-title{color:var(--navy)}
+  .section-light .dl-meta{color:var(--navy)}
+  .section-light .dl-meta .status{color:var(--blue)}
+  .section-light .dl-arrow{color:var(--blue)}
+
+  .address-band{background:var(--blue);padding:2.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;border-top:1px solid var(--green)}
+  .address-band .addr-label{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;font-weight:800;color:var(--green);margin-bottom:.65rem}
+  .address-band h4{color:var(--white);font-size:1.02rem;font-weight:800;margin-bottom:.3rem}
+  .address-band p{font-size:.88rem;color:var(--white);font-weight:600;line-height:1.55}
+  footer{background:var(--navy-deep);padding:2rem 4rem;text-align:center;border-top:1px solid rgba(120,190,33,.18)}
+  footer p{font-size:.72rem;color:var(--white);font-weight:600;line-height:1.7;letter-spacing:.06em}
+  footer p strong{color:var(--green);font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+
+  .mobile-toc-toggle{display:none}
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr}
+    aside{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;height:auto;z-index:90;width:100%}
+    aside.open{display:block}
+    .mobile-toc-toggle{display:inline-flex;align-items:center;gap:.5rem;background:transparent;border:1px solid var(--green);color:var(--green);padding:.45rem .85rem;font-family:inherit;font-weight:800;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:2px}
+    .topbar-download{padding:.55rem .75rem;font-size:.8rem}
+    .topbar-download .dl-text{display:none}
+    .topbar-cta{padding:.55rem .85rem;font-size:.62rem}
+    section,.section-light .inner,.address-band,footer{padding:3rem 1.5rem}
+    .hero{padding:3rem 1.5rem}
+    .grid-3,.grid-2,.kpi-grid,.checklist,.contact-grid,.price-headline,.price-add,.address-band,.downloads-grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat{border-right:none;border-bottom:1px solid rgba(120,190,33,.25)}
+    .hero-meta{grid-template-columns:1fr;gap:1rem;margin-top:2rem}
+    .action-row{grid-template-columns:30px 1fr;gap:.75rem}
+    .action-owner{grid-column:1/-1;text-align:left;padding-top:.4rem;border-top:1px solid rgba(120,190,33,.2);margin-top:.4rem}
+    .flow-row{grid-template-columns:1fr}
+    .price-headline{grid-template-columns:1fr}
+    .fte-block{text-align:left}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a href="#hero" class="brand"><span class="brand-mark">E</span>Envision × Boeing</a>
+  <div style="display:flex;gap:.6rem;align-items:center">
+    <button class="mobile-toc-toggle" id="mobileToggle">☰ Menu</button>
+    <a href="#downloads" class="topbar-download">↓<span class="dl-text"> Downloads</span></a>
+    <a href="#contact" class="topbar-cta">Move Forward</a>
+  </div>
+</header>
+
+<div class="layout">
+
+<aside id="sidebar">
+  <div class="toc-title">WIMKA Program</div>
+  <ul class="toc">
+    <li><a href="#hero" class="active"><span class="toc-num">00</span> Overview</a></li>
+    <li><a href="#about"><span class="toc-num">01</span> About Envision</a></li>
+    <li><a href="#program"><span class="toc-num">02</span> Program Snapshot</a></li>
+    <li><a href="#scope"><span class="toc-num">03</span> Scope &amp; Scale</a></li>
+    <li><a href="#operations"><span class="toc-num">04</span> Operations</a></li>
+    <li><a href="#quality"><span class="toc-num">05</span> Quality &amp; Compliance</a></li>
+    <li><a href="#readiness"><span class="toc-num">06</span> Readiness Hub</a></li>
+    <li><a href="#flow"><span class="toc-num">07</span> Workflow</a></li>
+    <li><a href="#kpis"><span class="toc-num">08</span> KPI Framework</a></li>
+    <li><a href="#pricing"><span class="toc-num">09</span> Pricing</a></li>
+    <li><a href="#actions"><span class="toc-num">10</span> Joint Actions</a></li>
+    <li><a href="#downloads"><span class="toc-num">11</span> Downloads</a></li>
+    <li><a href="#contact"><span class="toc-num">12</span> Contacts</a></li>
+  </ul>
+  <div class="toc-divider"></div>
+  <div class="toc-meta">
+    <div><strong>Pilot</strong>C17 Radome &amp; Tail Cone</div>
+    <div><strong>Status</strong>Pre-Launch Readiness</div>
+  </div>
+</aside>
+
+<main>
+
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="eyebrow">Envision × Boeing</div>
+    <h1>Warehousing, Inventory,<br>Kitting and Assembly<br><em>Built for the MRO Floor.</em></h1>
+    <p class="lede">A dedicated, secure, fully managed small-parts supply chain operation supporting Boeing's MRO production lines.</p>
+    <div class="hero-cta">
+      <a href="#program" class="btn-primary">Explore the Program</a>
+      <a href="#contact" class="btn-ghost">Contact Leadership</a>
+    </div>
+    <div class="hero-meta">
+      <div><strong>Program</strong>WIMKA Small Parts</div>
+      <div><strong>Pilot</strong>C17 Radome &amp; Tail Cone</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-light" id="about">
+  <div class="inner">
+    <div class="eyebrow">About Envision</div>
+    <h2>Two Campuses. <em style="color:var(--blue)">One Operating Company.</em></h2>
+    <p class="lede">A domestic manufacturing, assembly, and fulfillment company spanning Wichita, Kansas and Farmers Branch, Texas. Ninety-plus years in business, ISO 9001:2015 certified, built for government, military, and commercial customers from a single integrated platform.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">410K<em>sq ft</em></div><div class="stat-label">Combined Footprint</div></div>
+      <div class="stat"><div class="stat-num">550<em>+</em></div><div class="stat-label">Employees</div></div>
+      <div class="stat"><div class="stat-num">90<em>+</em></div><div class="stat-label">Years Operating</div></div>
+      <div class="stat"><div class="stat-num">ISO</div><div class="stat-label">9001:2015 Certified</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="program">
+  <div class="eyebrow">Program Snapshot</div>
+  <h2>A Dedicated Operation. <em>Inside an Envision Facility.</em></h2>
+  <p class="lede">Inventory remains customer-owned. Envision operates a controlled-access model purpose-built for Boeing-designated material — single program manager, single ISO-certified system.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">2,500<em>sq ft</em></div><div class="stat-label">Dedicated Secure Space</div></div>
+    <div class="stat"><div class="stat-num">100<em>%</em></div><div class="stat-label">Lot Traceability</div></div>
+    <div class="stat"><div class="stat-num">Approved</div><div class="stat-label">U.S. Citizens &amp; LPRs Only</div></div>
+    <div class="stat"><div class="stat-num">Single</div><div class="stat-label">Program Manager &amp; POC</div></div>
+  </div>
+  <details>
+    <summary><span class="summary-title">Controlled-Access Operating Model</span><span class="summary-meta">Why it matters</span><span class="summary-icon">+</span></summary>
+    <div class="details-body">Boeing material under this program is expected to be subject to heightened security and export-control restrictions. Envision limits access to approved, trained personnel meeting Boeing's eligibility requirements — and maintains access rosters, training records, and assignment controls supporting program compliance and audit readiness. See <a href="#quality" class="callout-link">Quality &amp; Compliance</a> for the full ITAR / denied-party / handler-of-record framework.</div>
+  </details>
+  <details>
+    <summary><span class="summary-title">Six Program Objectives</span><span class="summary-meta">What we're solving</span><span class="summary-icon">+</span></summary>
+    <div class="details-body">
+      <div class="grid-3" style="margin-top:.5rem">
+        <div class="card"><span class="card-label">Capacity</span><h3>Reclaim Floor Space</h3><p class="card-body">Move small-parts storage and kitting off Boeing's floor.</p></div>
+        <div class="card"><span class="card-label">People</span><h3>Redirect Personnel</h3><p class="card-body">Boeing teams refocus on MRO production and engineering.</p></div>
+        <div class="card"><span class="card-label">Accuracy</span><h3>Lot-Level Traceability</h3><p class="card-body">100% tracking with adjustments ≥ $5K pre-approved by Boeing.</p></div>
+        <div class="card"><span class="card-label">Throughput</span><h3>Streamlined Kitting</h3><p class="card-body">Pick, assemble, audit, package — continuous, ISO-governed.</p></div>
+        <div class="card"><span class="card-label">Scale</span><h3>Beyond C17 Day One</h3><p class="card-body">Architecture supports phased rollout of additional programs.</p></div>
+        <div class="card"><span class="card-label">Reliability</span><h3>Consistent Availability</h3><p class="card-body">Fixed order-processing windows. Parts land when needed.</p></div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section class="section-light" id="scope">
+  <div class="inner">
+    <div class="eyebrow">Scope &amp; Scale</div>
+    <h2>Inventory Profile. <em style="color:var(--blue)">Transfer Logic. Risk Allocation.</em></h2>
+    <p class="lede">All inventory remains customer-owned. Material moves through Boeing's receiving and quality processes first — Envision only handles material Boeing has released for off-floor activity.</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">~9,000</div><div class="stat-label">Unique Part Numbers</div></div>
+      <div class="stat"><div class="stat-num"><span class="ph">XX,XXX</span></div><div class="stat-label">Total Active Parts</div></div>
+      <div class="stat"><div class="stat-num"><span class="ph">XXXX</span></div><div class="stat-label">Annual Orders</div></div>
+      <div class="stat"><div class="stat-num">$9M<em>est.</em></div><div class="stat-label">Inventory Value</div></div>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <span class="card-label">Material Transfer</span>
+        <h3>Boeing Releases. Envision Receives.</h3>
+        <ul>
+          <li>Boeing receives, processes, dispositions material first</li>
+          <li>Envision only handles released material</li>
+          <li>QC Hold / Nonconforming / Return Pending segregated</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="card-label">Facility &amp; Standards</span>
+        <h3>2,500 sq ft, ISO-Governed</h3>
+        <p class="card-body">~1,750 sq ft dedicated secure storage; balance for kitting, staging, operations. Environmental control, access management, and traceability per ISO 9001:2015.</p>
+      </div>
+      <div class="card">
+        <span class="card-label">Insurance &amp; Risk</span>
+        <h3>Coverage Confirmed Pre-Launch</h3>
+        <p class="card-body">Envision will confirm — and if required, endorse — coverage for Boeing-owned inventory. Operating commencement contingent on agreed treatment. <a href="#readiness" class="callout-link">See Readiness Hub →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="operations">
+  <div class="eyebrow">Operations</div>
+  <h2>Receive. Manage. Kit. <em>Fulfill.</em></h2>
+  <p class="lede">Four operating disciplines, each with documented procedures and traceable outputs. Hours of operation 7 AM–4 PM CST.</p>
+  <details open>
+    <summary><span class="summary-title">01 · Receiving &amp; Audit</span><span class="summary-meta">Inbound material handling</span><span class="summary-icon">+</span></summary>
+    <div class="details-body">Verification against packing lists; condition assessment; WMS onboarding; verification of Boeing transfer status (Released / QC Hold / Return Pending / Awaiting Disposition); chain-of-custody confirmation; segregated processing for held or restricted material.</div>
+  </details>
+  <details>
+    <summary><span class="summary-title">02 · Inventory Management</span><span class="summary-meta">In-facility control</span><span class="summary-icon">+</span></summary>
+    <div class="details-body">Location control, FIFO or customer-specified strategies, daily cycle counts (A/B/C categories), annual physical, discrepancy reporting. Adjustments ≥ $5K require Boeing pre-approval.</div>
+  </details>
+  <details>
+    <summary><span class="summary-title">03 · Kitting &amp; Assembly</span><span class="summary-meta">Kit build process</span><span class="summary-icon">+</span></summary>
+    <div class="details-body">Pick to work order, assemble per spec, QA audit, package and stage. Process returned kits per Boeing-directed disposition. Maintain return transaction history and personnel handling records.</div>
+  </details>
+  <details>
+    <summary><span class="summary-title">04 · Order Fulfillment</span><span class="summary-meta">Pickup &amp; release</span><span class="summary-icon">+</span></summary>
+    <div class="details-body">Email-received orders processed through Envision's WMS-integrated workflow. Completed orders staged in the designated Boeing pickup zone under defined custody-transfer controls. Standard SLA: orders by 11 AM CST stage 9 AM CST next business day; after 11 AM CST, second business day. After-hours pickup model in development with dedicated east-side access point for controlled 24/7 retrieval.</div>
+  </details>
+  <div class="callout">
+    <span class="callout-label">Material Disposition Authority</span>
+    <p>Envision will not independently release Boeing-held material. Boeing quality authority governs disposition; Envision controls physical segregation and downstream handling. <a href="#readiness" class="callout-link">Tied to Readiness Hub →</a></p>
+  </div>
+</section>
+
+<section class="section-light" id="quality">
+  <div class="inner">
+    <div class="eyebrow">Quality &amp; Compliance</div>
+    <h2>ISO 9001:2015. <em style="color:var(--blue)">Aerospace-Grade Controls.</em></h2>
+    <p class="lede">Documented, auditable controls aligned to Boeing program requirements, Envision's ISO 9001:2015 quality management system, and applicable export-control, customer-security, and traceability obligations.</p>
+    <div class="grid-3">
+      <div class="card"><span class="card-label">Certified</span><h3>ISO 9001:2015</h3><p class="card-body">CERT-0145812 · Registered by Intertek for manufacture, assembly, and fulfillment for government, military, and commercial applications. Valid through 25 April 2028.</p></div>
+      <div class="card"><span class="card-label">SOP Coverage</span><h3>10 Procedure Domains</h3><p class="card-body">Receiving, auditing, storage, kitting, pre-pack QC, packing, traceability, returns, nonconformance, continuous improvement.</p></div>
+      <div class="card"><span class="card-label">Cycle Counts</span><h3>Risk-Weighted</h3><p class="card-body">A (5%, high value) — Quarterly. B (15%, medium) — Bi-Annually. C (80%, low) — Annually. Plus annual physical.</p></div>
+    </div>
+    <details style="margin-top:1.5rem">
+      <summary><span class="summary-title">Program-Specific Compliance Controls</span><span class="summary-meta">ITAR · DPS · Access · Records</span><span class="summary-icon">+</span></summary>
+      <div class="details-body">
+        <div class="grid-2" style="margin-top:.5rem">
+          <div class="card"><h4>ITAR &amp; Export Control</h4><p class="card-body">Handling requirements incorporated into program work instructions, personnel restrictions, access controls, and records management as applicable.</p></div>
+          <div class="card"><h4>Denied Party Screening</h4><p class="card-body">Screening and related compliance documentation incorporated into startup readiness prior to live material handling.</p></div>
+          <div class="card"><h4>Restricted Access</h4><p class="card-body">Visitor access, temporary labor, and unauthorized entry into Boeing-designated areas prohibited unless expressly authorized.</p></div>
+          <div class="card"><h4>Handler-of-Record</h4><p class="card-body">Lot traceability, nonconformance controls, return records, and audit-ready documentation for all transactions.</p></div>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="readiness">
+  <div class="eyebrow">Readiness Hub</div>
+  <h2>Two Gates. <em>One Path to Launch.</em></h2>
+  <p class="lede">An eight-condition activation gate must clear before pilot start. Ten broader open decisions sit alongside it — locked items become activation criteria as they're resolved.</p>
+  <div class="callout warn">
+    <span class="callout-label">Schedule Note</span>
+    <p>Pilot start date adjusted by one week to allow completion of physical setup, compliance readiness, and process validation activities required for a controlled launch.</p>
+  </div>
+  <div class="tabs">
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="gate">8-Condition Activation Gate</button>
+      <button class="tab-btn" data-tab="open">10 Open Decisions</button>
+    </div>
+    <div class="tab-content active" id="tab-gate">
+      <div class="checklist">
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Secure Space Accepted</strong><span>Boeing-designated storage and processing space completed and accepted</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Staffing Roster Vetted</strong><span>Roster reviewed against Boeing eligibility requirements</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Insurance Endorsed</strong><span>Coverage confirmation completed for Boeing-owned inventory</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Compliance Docs Received</strong><span>Denied party screening and access-control paperwork incorporated</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Nomenclature Mapped</strong><span>Part numbering and labeling conventions mapped into Envision WMS</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Pilot SKUs Validated</strong><span>SKU population and opening transfer list mutually validated</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Test Scripts Passed</strong><span>Order processing and pickup/returns workflows completed</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Mutual Go Decision</strong><span>Both parties agree the pilot is ready for controlled start</span></div></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-open">
+      <div class="checklist">
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Personnel Eligibility Rule</strong><span>U.S. citizens / LPRs approved per Boeing access-control requirements</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>ITAR / Export-Control Applicability</strong><span>Confirm scope of restrictions per part family and program</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Denied Party Documentation</strong><span>Boeing-supplied screening inputs and dependency confirmation</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Insurance Endorsement</strong><span>Coverage confirmation for Boeing-owned inventory under Envision policy</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Secure Cage Completion</strong><span>Physical build-out, access controls, and Boeing acceptance</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Inbound Processing Area</strong><span>Layout for held / nonconforming / pending-disposition material</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Nomenclature &amp; Labeling Mapping</strong><span>Boeing part numbering aligned to Envision WMS structure</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>After-Hours Pickup Controls</strong><span>East-side access point procedures and custody-transfer rules</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Pricing Model Decision</strong><span>Pilot transaction structure, volume assumptions, capital recovery</span></div></div>
+        <div class="check-item"><div class="check-box"></div><div class="check-text"><strong>Pilot Go-Live Readiness Review</strong><span>Final mutual review against the eight-condition activation gate</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-light" id="flow">
+  <div class="inner">
+    <div class="eyebrow">Workflow</div>
+    <h2>One Workflow. <em style="color:var(--blue)">Four Owners.</em></h2>
+    <p class="lede">Email-based order entry, defined release path back to the production floor.</p>
+    <div class="flow-graphic">
+      <div class="flow-row">
+        <div class="flow-actor">Boeing Spirit SR</div>
+        <div class="flow-steps">
+          <div class="flow-step">Submit kit orders via email to Envision</div>
+          <div class="flow-step empty">→</div>
+          <div class="flow-step empty">→</div>
+          <div class="flow-step">Post / Issue in the system</div>
+        </div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-actor">Envision</div>
+        <div class="flow-steps">
+          <div class="flow-step">Pull inventory and kit; prepare for pick-up</div>
+          <div class="flow-step">Communicate shortages, if any</div>
+          <div class="flow-step">Receive raw materials, shelve, pick &amp; kit</div>
+          <div class="flow-step">Dispatch kit</div>
+        </div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-actor">Boeing Spirit Purchasing</div>
+        <div class="flow-steps">
+          <div class="flow-step empty">→</div>
+          <div class="flow-step">Source fabricated parts</div>
+          <div class="flow-step empty">→</div>
+          <div class="flow-step empty">→</div>
+        </div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-actor">Boeing Spirit Ops</div>
+        <div class="flow-steps">
+          <div class="flow-step empty">→</div>
+          <div class="flow-step">Initiate / fabricate parts; transfer to Envision</div>
+          <div class="flow-step">When line is ready, request kit assembly</div>
+          <div class="flow-step">Release kit to production floor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kpis">
+  <div class="eyebrow">KPI Framework</div>
+  <h2>15 Metrics. <em>Mutually Defined.</em></h2>
+  <p class="lede">Final definitions, calculation rules, reporting cadence, and target thresholds mutually agreed during pilot readiness. Weekly status meetings until full implementation, then quarterly business reviews with Boeing leadership.</p>
+  <div class="tabs">
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="all">All 15</button>
+      <button class="tab-btn" data-tab="receiving">Receiving</button>
+      <button class="tab-btn" data-tab="inventory">Inventory</button>
+      <button class="tab-btn" data-tab="fulfillment">Fulfillment</button>
+      <button class="tab-btn" data-tab="quality">Quality</button>
+      <button class="tab-btn" data-tab="security">Security</button>
+    </div>
+    <div class="tab-content active" id="tab-all">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-name">Receiving Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Put-Away Cycle Time</div><div class="kpi-target">≤ 24 hrs</div></div>
+        <div class="kpi-card"><div class="kpi-name">Inventory Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Cycle Count Completion</div><div class="kpi-target">100%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Pick Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Kit Build Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">On-Time Order Fulfillment</div><div class="kpi-target">≥ 99%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Rush Order Response</div><div class="kpi-target">TBD at Pilot</div></div>
+        <div class="kpi-card"><div class="kpi-name">Return Processing Turnaround</div><div class="kpi-target">TBD at Pilot</div></div>
+        <div class="kpi-card"><div class="kpi-name">QC Hold / Restricted Aging</div><div class="kpi-target">TBD at Pilot</div></div>
+        <div class="kpi-card"><div class="kpi-name">Traceability Record Completeness</div><div class="kpi-target">100%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Labeling Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Open Nonconformance / CAR Count</div><div class="kpi-target">Trend Tracked</div></div>
+        <div class="kpi-card"><div class="kpi-name">After-Hours Pickup Release Accuracy</div><div class="kpi-target">100%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Security / Access-Control Incidents</div><div class="kpi-target">Zero Tolerance</div></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-receiving">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-name">Receiving Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Put-Away Cycle Time</div><div class="kpi-target">≤ 24 hrs</div></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-inventory">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-name">Inventory Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Cycle Count Completion</div><div class="kpi-target">100%</div></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-fulfillment">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-name">Pick Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Kit Build Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">On-Time Order Fulfillment</div><div class="kpi-target">≥ 99%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Rush Order Response</div><div class="kpi-target">TBD at Pilot</div></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-quality">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-name">Return Processing Turnaround</div><div class="kpi-target">TBD at Pilot</div></div>
+        <div class="kpi-card"><div class="kpi-name">QC Hold / Restricted Aging</div><div class="kpi-target">TBD at Pilot</div></div>
+        <div class="kpi-card"><div class="kpi-name">Traceability Record Completeness</div><div class="kpi-target">100%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Labeling Accuracy</div><div class="kpi-target">≥ 99.5%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Open Nonconformance / CAR Count</div><div class="kpi-target">Trend Tracked</div></div>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-security">
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-name">After-Hours Pickup Release Accuracy</div><div class="kpi-target">100%</div></div>
+        <div class="kpi-card"><div class="kpi-name">Security / Access-Control Incidents</div><div class="kpi-target">Zero Tolerance</div></div>
+      </div>
+    </div>
+  </div>
+  <details style="margin-top:1.5rem">
+    <summary><span class="summary-title">C17 Point of Departure — BOM History</span><span class="summary-meta">2024 → 2026 YTD</span><span class="summary-icon">+</span></summary>
+    <div class="details-body">
+      <div class="stats" style="margin:1rem 0 0">
+        <div class="stat"><div class="stat-num">236</div><div class="stat-label">2024 BOM Lines</div></div>
+        <div class="stat"><div class="stat-num">856</div><div class="stat-label">2025 BOM Lines</div></div>
+        <div class="stat"><div class="stat-num">118</div><div class="stat-label">2026 YTD</div></div>
+        <div class="stat"><div class="stat-num">108</div><div class="stat-label">Inventory On Hand</div></div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section class="section-light" id="pricing">
+  <div class="inner">
+    <div class="eyebrow">Pricing</div>
+    <h2>Estimated Fixed Monthly Fee. <em style="color:var(--blue)">Pilot &amp; Initial Phase.</em></h2>
+    <p class="lede">Based on dedicated labor, secure space, inventory control, fulfillment, quality administration, and program management. Final pricing anchored after agreement on transaction definitions, volume assumptions, after-hours support, insurance treatment, and capital recovery approach.</p>
+    <div class="price-headline">
+      <div>
+        <div class="price-tag">Ramp-Up &amp; Initial Phase Estimate</div>
+        <div style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;font-weight:800;color:var(--green);margin-bottom:.45rem">Inventory Mgmt, Kitting &amp; Assembly</div>
+        <div class="price-big">$33,600<em> / month</em></div>
+        <div class="price-fine">$403,200 annually · 3-year fixed price · 120-day cancellation · FOB Farmers Branch · Net 30</div>
+      </div>
+      <div class="fte-block">
+        <strong>6 FTE Assignment</strong>
+        1 Program Manager<br>3 Kit Assembly<br>1 Receiver<br>1 Cycle Count / QC Auditor
+      </div>
+    </div>
+    <div class="price-add">
+      <div class="add-card">
+        <span class="card-label">Implementation</span>
+        <div class="add-line"><span>Transition Support (per month)</span><span class="val">$5,000</span></div>
+        <div class="add-line"><span>Estimated Duration</span><span class="val">3 months</span></div>
+        <div class="add-line"><span>Total Implementation</span><span class="val">$15,000</span></div>
+      </div>
+      <div class="add-card">
+        <span class="card-label">Warehousing</span>
+        <div class="add-line"><span>Dedicated Secure (~2,500 sq ft)</span><span class="val">$1,250 / mo</span></div>
+        <div class="add-line"><span>Annual Warehousing</span><span class="val">$15,000</span></div>
+        <div class="add-line"><span>Customer-Supplied Racking</span><span class="val">No Charge</span></div>
+      </div>
+    </div>
+    <details style="margin-top:1.25rem">
+      <summary><span class="summary-title">What's Included in the Monthly Fee</span><span class="summary-meta">10 services</span><span class="summary-icon">+</span></summary>
+      <div class="details-body">
+        <div class="grid-2" style="margin-top:.5rem">
+          <ul style="list-style:none">
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Dedicated Program Manager + team</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Insurance coverage (per agreed treatment)</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Receiving and auditing</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Inventory management (no haz-mat)</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Order management and fulfillment</li>
+          </ul>
+          <ul style="list-style:none">
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Kitting and assembly</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> ISO-certified quality and compliance</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Customized program reporting</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Reusable / recyclable kit packaging</li>
+            <li style="padding:.3rem 0;padding-left:1rem;position:relative;font-weight:600"><span style="position:absolute;left:0;color:var(--blue);font-weight:800">›</span> Kit labeling</li>
+          </ul>
+        </div>
+        <div style="margin-top:1rem;padding-top:.85rem;border-top:1px solid rgba(0,48,135,.18);font-size:.82rem;color:var(--navy);font-weight:600;line-height:1.55">
+          <strong style="color:var(--blue);letter-spacing:.14em;text-transform:uppercase;font-size:.62rem;display:block;margin-bottom:.35rem">Contract Volume Basis</strong>
+          ~9,000 unique part numbers, more than <span class="ph">XX,XXX</span> total parts in active inventory with mixed lots, <span class="ph">XXXXXX</span> annual orders, ~$9M inventory value.
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<section id="actions">
+  <div class="eyebrow">Joint Actions</div>
+  <h2>10 Actions. <em>Tracked Weekly.</em></h2>
+  <p class="lede">Each action assigned a target date and tracked weekly until pilot launch. Owners reflect primary accountability; both teams support each item.</p>
+  <div class="actions-list">
+    <div class="action-row"><div class="action-num">01</div><div class="action-text">Execute MOU / LOI to authorize startup planning</div><div class="action-owner">Boeing / Envision Leadership</div></div>
+    <div class="action-row"><div class="action-num">02</div><div class="action-text">Complete mutual supplier and customer onboarding documentation</div><div class="action-owner">Boeing / Envision</div></div>
+    <div class="action-row"><div class="action-num">03</div><div class="action-text">Confirm personnel eligibility standard and compliance documentation</div><div class="action-owner">Boeing Compliance / Envision HR-Ops</div></div>
+    <div class="action-row"><div class="action-num">04</div><div class="action-text">Validate insurance treatment and complete policy endorsement</div><div class="action-owner">Envision / Boeing Risk</div></div>
+    <div class="action-row"><div class="action-num">05</div><div class="action-text">Finalize secure cage layout, access method, and inbound processing area</div><div class="action-owner">Envision Ops / Boeing</div></div>
+    <div class="action-row"><div class="action-num">06</div><div class="action-text">Complete part nomenclature, pilot item master, and labeling-rule mapping</div><div class="action-owner">Boeing / Envision Ops</div></div>
+    <div class="action-row"><div class="action-num">07</div><div class="action-text">Define transaction categories and choose pilot pricing structure</div><div class="action-owner">Commercial Leads</div></div>
+    <div class="action-row"><div class="action-num">08</div><div class="action-text">Finalize returns workflow, after-hours pickup, and custody-transfer rules</div><div class="action-owner">Boeing / Envision Ops</div></div>
+    <div class="action-row"><div class="action-num">09</div><div class="action-text">Define invoicing and develop C17 Point of Departure timeline</div><div class="action-owner">Boeing / Envision Commercial</div></div>
+    <div class="action-row"><div class="action-num">10</div><div class="action-text">Approve C17 pilot start date following readiness review</div><div class="action-owner">Boeing / Envision Leadership</div></div>
+  </div>
+</section>
+
+<section id="downloads">
+  <div class="eyebrow">Downloads</div>
+  <h2>Program Assets. <em>Ready to Share.</em></h2>
+  <p class="lede">Downloadable tools and reference documents for internal routing and approval workflows.</p>
+
+  <div class="downloads-grid">
+    <a href="#" class="dl-card disabled">
+      <div class="dl-icon">LOI</div>
+      <div class="dl-body">
+        <div class="dl-title">Letter of Intent Template</div>
+        <div class="dl-meta"><span class="status pending">Coming Soon</span> · Editable DOCX template</div>
+      </div>
+      <div class="dl-arrow">↓</div>
+    </a>
+    <a href="#" class="dl-card disabled">
+      <div class="dl-icon">ISO</div>
+      <div class="dl-body">
+        <div class="dl-title">ISO 9001:2015 Certificate</div>
+        <div class="dl-meta"><span class="status pending">Pending Upload</span> · CERT-0145812 · Valid through Apr 2028</div>
+      </div>
+      <div class="dl-arrow">↓</div>
+    </a>
+  </div>
+</section>
+
+<section class="section-light" id="contact">
+  <div class="inner">
+    <div class="eyebrow">Move Forward</div>
+    <h2>Ready to <em style="color:var(--blue)">Start the Conversation.</em></h2>
+    <p class="lede">Direct contacts for both teams. Next: confirm highlighted data, sign the LOI, validate insurance treatment, and lock the C17 Point of Departure timeline.</p>
+    <div class="contact-org">Envision</div>
+    <div class="contact-grid">
+      <div class="contact"><span class="contact-role">Strategy</span><div class="contact-name">Sebastian Zahr</div><div class="contact-title">Chief Revenue &amp; Strategy Officer</div><div class="contact-meta"><a href="mailto:Sebastian.Zahr@EnvisionUS.com">Sebastian.Zahr@EnvisionUS.com</a><br>(316) 655-4243</div></div>
+      <div class="contact"><span class="contact-role">Partnership</span><div class="contact-name">Scott Baker</div><div class="contact-title">Vice President, Strategic Partnerships</div><div class="contact-meta"><a href="mailto:Scott.Baker@EnvisionUS.com">Scott.Baker@EnvisionUS.com</a><br>(214) 697-5833</div></div>
+      <div class="contact"><span class="contact-role">Operations</span><div class="contact-name">Patrick Tuttle</div><div class="contact-title">SVP, Operations &amp; New Product Development</div><div class="contact-meta"><a href="mailto:Patrick.Tuttle@EnvisionUS.com">Patrick.Tuttle@EnvisionUS.com</a><br>(316) 253-1468</div></div>
+    </div>
+    <div class="contact-org">Boeing</div>
+    <div class="contact-grid" style="grid-template-columns:1fr 1fr">
+      <div class="contact"><span class="contact-role">General Management</span><div class="contact-name">Donald Dellavia</div><div class="contact-title">General Manager</div><div class="contact-meta"><a href="mailto:donald.a.dellavia@spiritaero.com">donald.a.dellavia@spiritaero.com</a><br>(312) 520-5252</div></div>
+      <div class="contact"><span class="contact-role">Aftermarket</span><div class="contact-name">Meghan Ashok</div><div class="contact-title">Spirit Aftermarket — Boeing Global Service</div><div class="contact-meta"><a href="mailto:megha.ashok@spiritaero.com">megha.ashok@spiritaero.com</a><br>(469) 456-9860</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="address-band">
+  <div>
+    <div class="addr-label">Envision, Dallas Campus</div>
+    <h4>1801 Valley View Lane</h4>
+    <p>Farmers Branch, TX 75234<br>(214) 821-2375</p>
+  </div>
+  <div>
+    <div class="addr-label">Envision, Wichita Campus</div>
+    <h4>2301 S Water Street</h4>
+    <p>Wichita, KS 67213<br>EnvisionUS.com</p>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Envision × Boeing</strong><br>WIMKA Small Parts Program<br>Confidential — Not to be distributed without written permission of Envision, Inc.</p>
+</footer>
+
+</main>
+</div>
+
+<script>
+const tocLinks = document.querySelectorAll('.toc a');
+const sections = Array.from(tocLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+function updateActive(){
+  const scrollPos = window.scrollY + 120;
+  let current = sections[0];
+  for(const s of sections){ if(s.offsetTop <= scrollPos) current = s; }
+  tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+}
+window.addEventListener('scroll', updateActive, {passive:true});
+updateActive();
+
+document.querySelectorAll('.tabs').forEach(group => {
+  const btns = group.querySelectorAll('.tab-btn');
+  const contents = group.querySelectorAll('.tab-content');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+      btns.forEach(b => b.classList.toggle('active', b === btn));
+      contents.forEach(c => c.classList.toggle('active', c.id === 'tab-' + target));
+    });
+  });
+});
+
+const toggle = document.getElementById('mobileToggle');
+const sidebar = document.getElementById('sidebar');
+toggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+sidebar.addEventListener('click', e => { if(e.target.tagName === 'A') sidebar.classList.remove('open'); });
+</script>
+</body>
+</html>
